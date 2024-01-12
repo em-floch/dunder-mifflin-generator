@@ -8,7 +8,7 @@ block_size = 32
 batch_size = 64
 seq_len = 10
 learning_rate = 0.003
-epochs = 1000
+epochs = 10000
 n_emd_dim = 32
 n_layer = 3
 n_head = 6
@@ -74,18 +74,24 @@ def generate_new_script(trained_model, decode):
     context = torch.zeros((1, 1), dtype=torch.long)
     return decode(trained_model.generate(context, max_tokens=1000)[0].tolist())
 
+def save_output_script(new_script):
+    timestamp = datetime.datetime.now().timestamp()
+    with open(f'output/new_script_{timestamp}.txt', 'w') as f:
+        f.write(new_script)
 
 def main(input_filepath):
+    """
+    Load the input script, train the model, generate a new script, and save it to a file.
+    Args:
+        input_filepath (str): Path to the input script.
+    """
     text = load_input(input_filepath)
     vocab_size, char_to_idx, idx_to_char, encode, decode = get_input_params(text)
     train_data, test_data = get_data(text, encode)
 
     trained_model = train_model(train_data, test_data, vocab_size, n_emd_dim, block_size, n_layer, n_head, drop_rate, epochs)
     new_script = generate_new_script(trained_model, decode)
-    print(new_script)
-    with open('new_script.txt', 'w') as f:
-        f.write(new_script)
-
+    save_output_script(new_script)
 
 if __name__ == '__main__':
     arg_parser = argparse.ArgumentParser()
