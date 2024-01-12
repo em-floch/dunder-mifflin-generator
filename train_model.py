@@ -4,13 +4,13 @@ import torch
 import argparse
 from transformer_decoder import LanguageModel
 
-block_size = 32
+block_size = 64
 batch_size = 64
 seq_len = 10
 learning_rate = 0.003
 epochs = 10000
-n_emd_dim = 32
-n_layer = 3
+n_emd_dim = 64
+n_layer = 6
 n_head = 6
 drop_rate = 0.2
 
@@ -72,7 +72,7 @@ def train_model(train_data, test_data, vocab_size, n_emd_dim, block_size, n_laye
 
 def generate_new_script(trained_model, decode):
     context = torch.zeros((1, 1), dtype=torch.long)
-    return decode(trained_model.generate(context, max_tokens=1000)[0].tolist())
+    return decode(trained_model.generate(context, max_tokens=10000)[0].tolist())
 
 def save_output_script(new_script):
     timestamp = datetime.datetime.now().timestamp()
