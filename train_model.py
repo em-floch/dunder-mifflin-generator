@@ -8,7 +8,7 @@ block_size = 32
 batch_size = 64
 seq_len = 10
 learning_rate = 0.003
-epochs = 10000
+epochs = 1000
 n_emd_dim = 32
 n_layer = 3
 n_head = 6
@@ -80,8 +80,7 @@ def main(input_filepath):
     vocab_size, char_to_idx, idx_to_char, encode, decode = get_input_params(text)
     train_data, test_data = get_data(text, encode)
 
-    train_model(train_data, test_data, vocab_size, n_emd_dim, block_size, n_layer, n_head, drop_rate, epochs)
-    trained_model = torch.load('trained_model.pth')
+    trained_model = train_model(train_data, test_data, vocab_size, n_emd_dim, block_size, n_layer, n_head, drop_rate, epochs)
     new_script = generate_new_script(trained_model, decode)
     print(new_script)
     with open('new_script.txt', 'w') as f:
