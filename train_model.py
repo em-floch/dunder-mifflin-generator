@@ -52,6 +52,7 @@ def get_batch(split, train_data, test_data):
 
 
 def train_model(train_data, test_data, vocab_size, n_emd_dim, block_size, n_layer, n_head, drop_rate, epochs):
+
     model = LanguageModel(vocab_size=vocab_size, n_emd_dim=n_emd_dim, block_size=block_size, n_layer=n_layer,
                           n_head=n_head, drop_rate=drop_rate)
     optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
